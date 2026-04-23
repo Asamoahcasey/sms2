@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Broadcaster | Static UI</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: url('background.jpg.png') no-repeat center center fixed;
+            background-size: contain;
+            background-color: #f4f4f9;
+            padding: 20px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container { max-width: 600px; margin: auto; background: rgba(255,255,255,0.92); padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { margin-top: 0; color: #333; }
+        label { display: block; margin-top: 1rem; font-weight: bold; }
+        textarea, input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { margin-top: 1.5rem; width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .char-info { font-size: 0.85rem; color: #666; margin-top: 5px; }
+        .status { margin-top: 1rem; padding: 10px; border-radius: 4px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>SMS Broadcaster</h1>
+    <form id="smsForm">
+        <label for="recipients">Recipient Numbers (comma separated)</label>
+        <textarea id="recipients" rows="3" placeholder="+1234567890, +1987654321" required></textarea>
+
+        <label for="message">Message</label>
+        <textarea id="message" rows="4" maxlength="160" placeholder="Enter your message here..." required></textarea>
+        <div class="char-info"><span id="charCount">0</span>/160 characters</div>
+
+        <label for="apiKey">Hubtel API Key</label>
+        <input id="apiKey" type="password" placeholder="Enter your Hubtel API Key" required>
+
+        <button type="submit" id="sendBtn">Broadcast Message</button>
+    </form>
+    
+    <div id="statusMessage" class="status"></div>
+</div>
+
+<script>
+    const form = document.getElementById('smsForm');
+    const messageInput = document.getElementById('message');
+    const charCount = document.getElementById('charCount');
+    const statusMessage = document.getElementById('statusMessage');
+
+    // Update character count in real-time
+    messageInput.addEventListener('input', () => {
+        charCount.textContent = messageInput.value.length;
+    });
+
+    // Handle form submission
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const recipients = document.getElementById('recipients').value;
+        const message = messageInput.value;
+        const apiKey = document.getElementById('apiKey').value;
+
+        // Visual feedback for the "static" state
+        statusMessage.style.display = 'block';
+        statusMessage.style.backgroundColor = '#d4edda';
+        statusMessage.textContent = 'Ready! Backend not connected. Check console for data.';
+
+        // Log data that would normally be sent to your API
+        console.log("--- SMS Payload Ready ---");
+        console.log("Recipients:", recipients.split(',').map(n => n.trim()));
+        console.log("Message Content:", message);
+        console.log("Hubtel API Key:", apiKey);
+    });
+</script>
+
+</body>
+</html>
